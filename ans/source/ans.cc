@@ -64,7 +64,7 @@ AnsAdjustLen::AnsAdjustLen(const unsigned int sampleRate, const int mode)
 	}
 
 	LOGD("new Ans success !\n");
-	_sampleNum = sampleRate / 1000;
+	_sampleNum = sampleRate / 100;
 	memset(_finishBuf, 0, BUF_SIZE * 2);
 	memset(_unfinishBuf, 0, BUF_SIZE * 2);
 	_finishSize = 0;
@@ -204,7 +204,7 @@ int AnsImpl::deal(short *data, const unsigned int bytes)
 	}
 
 	fwrite(_interleaveBuf[0], 1, bytes / 2, _fpIn);
-	int ret = _left->deal(_interleaveBuf[0], bytes / 4, data);
+	int ret = _left->deal(_interleaveBuf[0], bytes / 2, data);
 	fwrite(data, 1, bytes / 2, _fpOut);
 	return ret;
 }
