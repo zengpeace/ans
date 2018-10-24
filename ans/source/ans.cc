@@ -184,7 +184,7 @@ AnsImpl::~AnsImpl()
 	}
 }
 
-/*int AnsImpl::deal(short *data, const unsigned int bytes)
+int AnsImpl::deal(short *data, const unsigned int bytes)
 {
 	int ret;
 	unsigned int perChannelSampleNum, interleaveSize;
@@ -194,9 +194,9 @@ AnsImpl::~AnsImpl()
 	interleave(_interleaveBuf, perChannelSampleNum, data, interleaveSize);
 
 	return ret;
-}*/
+}
 
-int AnsImpl::deal(short *data, const unsigned int bytes)
+/*int AnsImpl::deal(short *data, const unsigned int bytes)
 {
 	for(unsigned int i = 0; i < bytes / 4; i ++)
 	{
@@ -207,7 +207,7 @@ int AnsImpl::deal(short *data, const unsigned int bytes)
 	int ret = _left->deal(_interleaveBuf[0], bytes / 2, data);
 	fwrite(data, 1, bytes / 2, _fpOut);
 	return ret;
-}
+}*/
 
 void AnsImpl::interleave(short** inData, const unsigned int inSize, short* outData, unsigned int& outSize)
 {
