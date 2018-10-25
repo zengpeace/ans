@@ -8,7 +8,7 @@ XX = $(PLATFORM)g++
 AR = $(PLATFORM)ar
 
 EXTERN_MACRO = -DWEBRTC_LINUX -DWEBRTC_NS_FIXED -DWEBRTC_ARCH_ARM_V7
-COMMON_FLAGS = -march=armv7-a -mtune=cortex-a8  -mcpu=cortex-a8 -Wall $(DEBUG_MODE)
+COMMON_FLAGS = -march=armv7-a -mtune=cortex-a8 -mfpu=neon -mcpu=cortex-a8 -Wall $(DEBUG_MODE)
 C_COMMON_FLAGS = $(COMMON_FLAGS) -Wunused -Wsign-compare -Wunreachable-code -DDEBUG_SYS_INFO -fPIC -fstack-protector-all $(EXTERN_MACRO) 
 CFLAGS = $(C_COMMON_FLAGS) -std=gnu99
 CXXFLAGS = $(C_COMMON_FLAGS)
@@ -22,7 +22,9 @@ INC =	-I./ \
 		-I./common_audio/signal_processing_library/main/interface \
 		-I./common_audio/resampler/main/interface \
 		-I./common_audio/vad/main/interface \
-		-I./common_audio/vad/main/source
+		-I./common_audio/vad/main/source \
+		-I./modules/audio_processing/agc/main/interface \
+		-I./modules/audio_processing/agc/main/source
 		
 
 DIR = ./

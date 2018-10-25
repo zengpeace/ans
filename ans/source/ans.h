@@ -6,8 +6,13 @@
 #include "stdio.h"
 #include "noise_suppression_x.h"
 
+#include "agc.h"
+
 #include "common_head.h"
+
+#ifndef LOGD
 #define LOGD udi_erro_log
+#endif
 
 class Ans
 {
@@ -37,11 +42,14 @@ private:
 	AnsAdjustLen();
 
 	Ans *_ans;
+	AgcImpl *_agcImpl;
 	unsigned int _sampleNum;
 	short _finishBuf[BUF_SIZE];
 	short _unfinishBuf[BUF_SIZE];
 	int _finishSize;
 	int _unfinishSize;
+
+	short _agcTmpBuf[BUF_SIZE];
 };
 
 

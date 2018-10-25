@@ -23,8 +23,9 @@ INC =	-I../inc \
 		-I../inc/common_audio/resampler/main/interface \
 		-I../inc/common_audio/vad/main/interface \
 		-I../inc/common_audio/vad/main/source \
-		-I./test
-
+		-I./test \
+		-I../inc/modules/audio_processing/agc/main/interface \
+		-I../inc/modules/audio_processing/agc/main/source
 
 DIR = ./
 

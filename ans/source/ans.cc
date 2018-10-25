@@ -70,11 +70,21 @@ AnsAdjustLen::AnsAdjustLen(const unsigned int sampleRate, const int mode)
 	_finishSize = 0;
 	_unfinishSize = 0;
 
+	_agcImpl = new AgcImpl(1, 16000);
+	if(_agcImpl)
+	{
+		LOGD("new AgcImpl fail !\n");
+		return;
+	}
+	
+
 	LOGD("-%s:\n", __FUNCTION__);
 }
 
 AnsAdjustLen::~AnsAdjustLen()
 {
+	if(_agcImpl)
+
 	if(_ans)
 	{
 		delete _ans;
@@ -84,6 +94,12 @@ AnsAdjustLen::~AnsAdjustLen()
 
 int AnsAdjustLen::deal(short *data, const unsigned int bytes, short *outData)
 {
+	if(!_ans || !_agcImpl)
+	{
+		LOGD("init fail ! %p, %p\n", _ans, _agcImpl);
+		return -1;
+	}
+
 	memcpy((unsigned char*)_unfinishBuf + _unfinishSize*2, (unsigned char*)data, bytes);
     _unfinishSize += bytes / 2;
 
@@ -91,8 +107,9 @@ int AnsAdjustLen::deal(short *data, const unsigned int bytes, short *outData)
     int restInSize = _unfinishSize;
     while(restInSize >= (int)_sampleNum)
     {
-        _ans->deal(inData, NULL, _finishBuf + _finishSize, NULL);
-        _finishSize += _sampleNum;
+        _ans->deal(inData, NULL, _agcTmpBuf, NULL);
+       	_agcImpl->deal(_agcTmpBuf, _finishBuf + _finishSize);
+		 _finishSize += _sampleNum;
         restInSize -= _sampleNum;
         inData += _sampleNum;
     }
@@ -106,7 +123,7 @@ int AnsAdjustLen::deal(short *data, const unsigned int bytes, short *outData)
     if(_finishSize < (int)bytes / 2)
     {
         LOGD("not enough data ! %d, %d\n", _finishSize * 2, bytes);
-        return -1;
+        return -2;
     }
 
     memcpy(outData?outData:data, (unsigned char*)_finishBuf, bytes);
